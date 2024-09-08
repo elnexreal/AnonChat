@@ -1,60 +1,65 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { socket } from "./lib/socket"
+import { Message } from "@/utils/interfaces"
 
 export default function Home() {
-  const [isConnected, setIsConnected] = useState(false)
-  const [transport, setTransport] = useState("N/A")
-  const [message, setMessage] = useState<string>("no message lol")
+  const [isConnected, setIsConnected] = useState<boolean>(socket.connected)
+  const [messages, setMessages] = useState<Message[] | []>([])
+  const msgInput = useRef("")
 
   useEffect(() => {
-    if (socket.connected) {
-      onConnect()
-    }
-
     function onConnect() {
       setIsConnected(true)
-      setTransport(socket.io.engine.transport.name)
-
-      socket.io.engine.on("upgrade", (transport) => {
-        setTransport(transport.name)
-      })
     }
 
     function onDisconnect() {
       setIsConnected(false)
-      setTransport("N/A")
+    }
+
+    function onMessage(value: string) {
+      const message: Message = JSON.parse(value)
+
+      setMessages((previous) => [...previous, message])
     }
 
     socket.on("connect", onConnect)
     socket.on("disconnect", onDisconnect)
-    socket.on("message", (message) => {
-      setMessage(message)
-    })
+    socket.on("message", onMessage)
 
     return () => {
       socket.off("connect", onConnect)
       socket.off("disconnect", onDisconnect)
+      socket.off("message", onMessage)
     }
-  }, [])
+  }, [messages])
 
   function sendMessage() {
     socket.send(
-      "If you didn't click the button it means it works, if you clicked the button it also works hah trollface  me"
+      JSON.stringify({
+        author: "anon",
+        content: msgInput.current,
+      })
     )
   }
 
   return (
-    <div>
-      <p>Status: {isConnected ? "connected" : "disconnected"}</p>
-      <p>Transport: {transport}</p>
-      <hr />
-
+    <div className="flex gap-4 text-black m-16">
+      <input
+        type="text"
+        onChange={(e) => {
+          msgInput.current = e.target.value
+        }}
+      />
       <button onClick={sendMessage} className="p-2 bg-green-500">
         Test message sending
       </button>
-      <p>Message: {message}</p>
+      {messages.map((msg, index) => (
+        <p key={index} className="text-white">
+          {msg.content}
+        </p>
+      ))}
     </div>
   )
 }
