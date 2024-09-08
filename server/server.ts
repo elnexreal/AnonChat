@@ -1,5 +1,6 @@
 import { createServer } from "node:http"
 import { Server, Socket } from "socket.io"
+import { Message } from "../utils/interfaces"
 import next from "next"
 
 const hostname = "localhost"
@@ -32,7 +33,7 @@ app.prepare().then(() => {
       console.log(`Client disconnected (${reason})`)
     })
 
-    client.on("message", (message) => {
+    client.on("message", (message: Message) => {
       clients.forEach((client) => {
         client.send(message)
       })
