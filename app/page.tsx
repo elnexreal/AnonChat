@@ -3,27 +3,28 @@
 import { useEffect, useState, useRef } from "react"
 import { socket } from "./lib/socket"
 import { Message } from "@/utils/interfaces"
+import Chat from "./components/chat"
 
 export default function Home() {
   const [isConnected, setIsConnected] = useState<boolean>(socket.connected)
-  const [messages, setMessages] = useState<Message[] | []>([])
+  const [messages, setMessages] = useState<Message[]>([])
   const msgInput = useRef("")
 
+  function onConnect() {
+    setIsConnected(true)
+  }
+
+  function onDisconnect() {
+    setIsConnected(false)
+  }
+
+  function onMessage(value: string) {
+    const message: Message = JSON.parse(value)
+
+    setMessages((previous) => [...previous, message])
+  }
+
   useEffect(() => {
-    function onConnect() {
-      setIsConnected(true)
-    }
-
-    function onDisconnect() {
-      setIsConnected(false)
-    }
-
-    function onMessage(value: string) {
-      const message: Message = JSON.parse(value)
-
-      setMessages((previous) => [...previous, message])
-    }
-
     socket.on("connect", onConnect)
     socket.on("disconnect", onDisconnect)
     socket.on("message", onMessage)
@@ -35,31 +36,9 @@ export default function Home() {
     }
   }, [messages])
 
-  function sendMessage() {
-    socket.send(
-      JSON.stringify({
-        author: "anon",
-        content: msgInput.current,
-      })
-    )
-  }
-
   return (
-    <div className="flex gap-4 text-black m-16">
-      <input
-        type="text"
-        onChange={(e) => {
-          msgInput.current = e.target.value
-        }}
-      />
-      <button onClick={sendMessage} className="p-2 bg-green-500">
-        Test message sending
-      </button>
-      {messages.map((msg, index) => (
-        <p key={index} className="text-white">
-          {msg.content}
-        </p>
-      ))}
-    </div>
+    <main className="flex items-center justify-center h-screen w-screen bg-gradient-to-br from-[#151515] to-[#101010]">
+      <Chat messages={messages} />
+    </main>
   )
 }
