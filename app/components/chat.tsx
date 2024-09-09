@@ -68,7 +68,6 @@ export default function Chat({ messages }: Props) {
             }}
           />
           <div className="flex items-center justify-center">
-            {/*TODO: BUTTON CLICK THINGY, I SHOULD PASS THE FUNCTION TO BE CALLBACKED*/}
             <Button onClick={sendMessage}>
               <BiSend size={40} />
             </Button>
