@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState } from "react"
 import { socket } from "./lib/socket"
 import { Message } from "@/utils/interfaces"
 import Chat from "./components/chat"
