@@ -74,6 +74,13 @@ export default function Chat({ ...props }: ChatProps) {
             onChange={(e) => {
               inputRef.current = e.currentTarget.value
             }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault()
+                sendMessage()
+                e.currentTarget.value = ""
+              }
+            }}
           />
           <div className="flex items-center justify-center">
             <Button onClick={sendMessage}>
