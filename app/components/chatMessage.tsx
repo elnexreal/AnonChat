@@ -18,12 +18,12 @@ export default function ChatMessage({ ...props }: MessageProps) {
     <div
       className={`${
         isEven(props.stagger) ? "bg-white/10" : "bg-white/5"
-      } flex p-2`}
+      } flex flex-col gap-2 p-2`}
     >
+      <span className="text-xs opacity-50">{props.author}</span>
       <p className="whitespace-pre-wrap break-words min-w-0 flex-1">
         {props.content}
       </p>
-      <span className="text-xs m-2">{props.author}</span>
     </div>
   )
 }
