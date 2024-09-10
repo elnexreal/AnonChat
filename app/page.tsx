@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { socket } from "./lib/socket"
-import { Message } from "@/utils/interfaces"
+import { Message } from "../utils/interfaces"
 import Chat from "./components/chat"
 
 export default function Home() {

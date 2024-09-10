@@ -1,9 +1,9 @@
 "use client"
 
-import { Message } from "@/utils/interfaces"
+import { Message } from "../../utils/interfaces"
 import { ABeeZee } from "next/font/google"
 import { BiSend } from "react-icons/bi"
-import { socket } from "@/app/lib/socket"
+import { socket } from "../../app/lib/socket"
 import { useEffect, useRef } from "react"
 import Button from "./button"
 import ChatMessage from "./chatMessage"
