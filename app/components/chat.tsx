@@ -22,16 +22,20 @@ interface ChatProps {
 
 export default function Chat({ ...props }: ChatProps) {
   const divRef = useRef<HTMLDivElement>(null)
-  const inputRef = useRef<string>("")
+  const inputRef = useRef<HTMLTextAreaElement>(null)
 
   function sendMessage() {
-    if (inputRef.current === "") return
+    if (inputRef.current?.value === "") return
 
     socket.send(
       JSON.stringify({
-        content: inputRef.current,
+        content: inputRef.current?.value,
       })
     )
+
+    if (inputRef.current?.value) {
+      inputRef.current.value = ""
+    }
   }
 
   useEffect(() => {
@@ -71,16 +75,13 @@ export default function Chat({ ...props }: ChatProps) {
         <div className="grid grid-cols-5 bg-white/5">
           <textarea
             className="bg-white/10 resize-none m-2 rounded-lg col-span-4 p-2 scrollbar-thin overflow-clip focus:outline-none"
-            onChange={(e) => {
-              inputRef.current = e.currentTarget.value
-            }}
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault()
                 sendMessage()
-                e.currentTarget.value = ""
               }
             }}
+            ref={inputRef}
           />
           <div className="flex items-center justify-center">
             <Button onClick={sendMessage}>
