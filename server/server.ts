@@ -35,6 +35,7 @@ app.prepare().then(() => {
 
     client.on("message", (value: string) => {
       const message: Message = JSON.parse(value)
+      message.author = client.id
 
       // const reg: RegExp = /^[\x00-\xFF]*$/gi
 
