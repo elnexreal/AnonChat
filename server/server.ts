@@ -33,9 +33,13 @@ app.prepare().then(() => {
       console.log(`Client disconnected (${reason})`)
     })
 
-    client.on("message", (message: Message) => {
+    client.on("message", (value: string) => {
+      const message: Message = JSON.parse(value)
+
+      console.log(message.content)
+
       clients.forEach((client) => {
-        client.send(message)
+        client.send(JSON.stringify(message))
       })
     })
   })
