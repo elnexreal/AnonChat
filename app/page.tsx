@@ -6,9 +6,8 @@ import { Message } from "@/utils/interfaces"
 import Chat from "./components/chat"
 
 export default function Home() {
-  const [isConnected, setIsConnected] = useState<boolean>(socket.connected)
+  const [isConnected, setIsConnected] = useState(false)
   const [messages, setMessages] = useState<Message[]>([])
-  const msgInput = useRef("")
 
   function onConnect() {
     setIsConnected(true)
@@ -25,6 +24,10 @@ export default function Home() {
   }
 
   useEffect(() => {
+    if (socket.connected) {
+      onConnect()
+    }
+
     socket.on("connect", onConnect)
     socket.on("disconnect", onDisconnect)
     socket.on("message", onMessage)
@@ -38,7 +41,10 @@ export default function Home() {
 
   return (
     <main className="flex items-center justify-center h-screen w-screen bg-gradient-to-br from-[#151515] to-[#101010]">
-      <Chat messages={messages} />
+      <Chat
+        status={isConnected ? "Connected." : "Disconnected."}
+        messages={messages}
+      />
     </main>
   )
 }
