@@ -17,10 +17,8 @@ export default function Home() {
     setIsConnected(false)
   }
 
-  function onMessage(value: string) {
-    const message: Message = JSON.parse(value)
-
-    setMessages((previous) => [...previous, message])
+  function onMessage(value: Message) {
+    setMessages((previous) => [...previous, value])
   }
 
   useEffect(() => {
