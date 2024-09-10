@@ -36,7 +36,15 @@ app.prepare().then(() => {
     client.on("message", (value: string) => {
       const message: Message = JSON.parse(value)
 
-      console.log(message.content)
+      // const reg: RegExp = /^[\x00-\xFF]*$/gi
+
+      // if (!reg.test(message.content))
+      //   return client.send(
+      //     JSON.stringify({
+      //       author: "Server",
+      //       content: "Non-ASCII characters are not allowed.",
+      //     })
+      //   )
 
       clients.forEach((client) => {
         client.send(JSON.stringify(message))
