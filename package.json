@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "tsx server/server.ts",
-    "start": "NODE_ENV=production tsx server/server.ts",
-    "lint": "next lint"
+    "start": "tsx server/server.ts"
   },
   "type": "module",
   "dependencies": {
