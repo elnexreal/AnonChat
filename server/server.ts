@@ -4,7 +4,7 @@ import { Message } from "../utils/interfaces"
 import next from "next"
 
 const hostname = "localhost"
-const port = 3000
+const port = process.env.NODE_ENV === "production" ? 80 : 3000
 const dev = process.env.NODE_ENV !== "production"
 const app = next({ dev, hostname, port })
 
