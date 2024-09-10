@@ -5,7 +5,6 @@ interface MessageProps {
 }
 
 export default function ChatMessage({ ...props }: MessageProps) {
-  console.log(props.stagger)
   function isEven(valueToCheck: number): boolean {
     if (valueToCheck % 2 === 0) {
       return true
