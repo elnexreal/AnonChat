@@ -7,4 +7,4 @@
 - [ ] Extend the Clients to add names & optional registration
 - [ ] Messages should contain timestamp, content & id
 - [ ] Channel system
-- [ ] Uiv
+- [x] UI
