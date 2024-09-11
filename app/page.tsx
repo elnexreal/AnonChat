@@ -38,11 +38,8 @@ export default function Home() {
   }, [messages])
 
   return (
-    <main className="flex items-center justify-center h-screen w-screen bg-gradient-to-br from-[#151515] to-[#101010]">
-      <Chat
-        status={isConnected ? "Connected." : "Disconnected."}
-        messages={messages}
-      />
+    <main className="h-dvh w-dvw">
+      <Chat status={isConnected} messages={messages} />
     </main>
   )
 }

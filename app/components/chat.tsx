@@ -17,7 +17,7 @@ const _ABeeZee = ABeeZee({
 
 interface ChatProps {
   messages: Message[]
-  status: string
+  status: boolean
 }
 
 export default function Chat({ ...props }: ChatProps) {
@@ -45,48 +45,60 @@ export default function Chat({ ...props }: ChatProps) {
   }, [props.messages])
 
   return (
-    <div className="bg-stone-900 border-2 rounded-md size-5/6 grid grid-cols-4 grid-rows-6 overflow-clip">
-      <div className="col-span-4 flex items-center px-8 bg-white/5 border-b-4 border-white/20">
-        <h1 className={`text-7xl ${_ABeeZee.className} flex-1`}>AnonChat</h1>
-        <h4>{props.status}</h4>
+    <div className="bg-stone-900 size-full flex flex-col">
+      {/* Navbar */}
+      <div className="flex flex-col md:flex-row items-center justify-center md:p-8 bg-white/5 border-b-2 border-white/20">
+        <h1 className={`text-3xl md:text-6xl ${_ABeeZee.className} md:flex-1`}>
+          AnonChat
+        </h1>
+        {props.status ? (
+          <span className="text-green-500">Connected.</span>
+        ) : (
+          <span className="text-red-500">Disconnected</span>
+        )}
       </div>
 
-      <div className="col-span-1 row-span-5 text-center bg-white/5 border-r-4 border-white/20">
-        <h1 className="text-2xl py-4">Channels are coming "soon..."</h1>
-      </div>
-
-      <div className="col-span-3 row-span-5 grid grid-rows-8">
-        <div
-          className="row-span-7 flex flex-col overflow-y-scroll scrollbar-thin m-2"
-          ref={divRef}
-        >
-          {props.messages.map((msg, index) => {
-            return (
-              <ChatMessage
-                key={index}
-                stagger={index}
-                author={msg.author}
-                content={msg.content}
-              />
-            )
-          })}
+      <div className="flex size-full overflow-hidden">
+        {/* Channel list */}
+        <div className={`text-center bg-white/5 overflow-clip`}>
+          <h1 className="text-2xl py-4">Channels are coming "soon..."</h1>
         </div>
 
-        <div className="grid grid-cols-5 bg-white/5">
-          <textarea
-            className="bg-white/10 resize-none m-2 rounded-lg col-span-4 p-2 scrollbar-thin overflow-clip focus:outline-none"
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault()
-                sendMessage()
-              }
-            }}
-            ref={inputRef}
-          />
-          <div className="flex items-center justify-center">
-            <Button onClick={sendMessage}>
-              <BiSend size={40} />
-            </Button>
+        <div className="flex flex-col size-full">
+          {/* Messages list */}
+          <div
+            className="flex-1 flex flex-col overflow-y-scroll scrollbar-thin m-2"
+            ref={divRef}
+          >
+            {props.messages.map((msg, index) => {
+              return (
+                <ChatMessage
+                  key={index}
+                  stagger={index}
+                  author={msg.author}
+                  content={msg.content}
+                />
+              )
+            })}
+          </div>
+
+          {/* Input & buttons */}
+          <div className="flex gap-2 p-2 bg-white/5">
+            <textarea
+              className="bg-white/10 resize-none rounded-lg flex-1 p-2 scrollbar-thin overflow-clip focus:outline-none"
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault()
+                  sendMessage()
+                }
+              }}
+              ref={inputRef}
+            />
+            <div className="flex gap-2 items-center justify-center">
+              <Button onClick={sendMessage}>
+                <BiSend size={40} />
+              </Button>
+            </div>
           </div>
         </div>
       </div>
